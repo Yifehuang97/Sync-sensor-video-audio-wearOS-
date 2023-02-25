@@ -206,6 +206,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         // Init sensor recording
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
         // Init spinner
         spinnerAct = (Spinner)findViewById(R.id.spinnerAct);
@@ -267,6 +268,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         }
 
         if (flagA && flagG) {
+
             String date = String.valueOf(System.currentTimeMillis());
             date +=  "," + ax + "," + ay + "," + az + "," + gx + "," + gy + "," + gz + "\n";
 
@@ -359,30 +361,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             stop_recording_sending.start();
             btRecord.setText("Start");
             stopRecording();
-            Toast.makeText(getApplicationContext(), "Saving and preparing transferring",
-                    Toast.LENGTH_LONG).show();
-            // Wait for set up transferring connection
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-            //Toast.makeText(getApplicationContext(), "Start data transferring",
-            //        Toast.LENGTH_LONG).show();
-            // transfer sensor csv
-            Thread send_sensor;
-            TRANSFERRING_FILE_PATH = filePath + "/" + fileName;
-            System.out.println(TRANSFERRING_FILE_PATH);
-            send_sensor = new Thread(new sendFile());
-            send_sensor.start();
-            send_sensor.join();
-            // transfer audio data
-            Thread send_audio;
-            TRANSFERRING_FILE_PATH = filePath +  audioFileName;
-            System.out.println(TRANSFERRING_FILE_PATH);
-            send_audio = new Thread(new sendFile());
-            send_audio.start();
-            send_audio.join();
+            Toast.makeText(getApplicationContext(), "Saving",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
